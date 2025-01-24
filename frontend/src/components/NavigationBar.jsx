@@ -15,9 +15,7 @@ const NavigationBar = ({ loggedInUserId }) => {
       if (!loggedInUserId) return;
 
       try {
-        const { data } = await axios.get(
-          `http://localhost:5000/api/profiles/${loggedInUserId}`
-        );
+        const { data } = await axios.get(`/api/profiles/${loggedInUserId}`);
         setProfileImage(data.profile?.profileImage || null);
       } catch (error) {
         console.error("Error fetching profile image:", error);
