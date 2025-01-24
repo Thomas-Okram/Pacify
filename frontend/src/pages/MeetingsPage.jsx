@@ -68,7 +68,7 @@ const MeetingsPage = ({ isAdmin }) => {
     <div
       className="w-full min-h-screen bg-gradient-to-br from-green-900 via-gray-900 to-black text-white"
       style={{
-        backgroundImage: "url(public/asset/hero/pexels-thirdman-7652040.jpg)",
+        backgroundImage: "url('asset/hero/pexels-thirdman-7652040.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

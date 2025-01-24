@@ -67,7 +67,7 @@ const NavigationBar = ({ loggedInUserId }) => {
         >
           {profileImage ? (
             <img
-              src={`http://localhost:5000/uploads/${profileImage}`}
+              src={`/uploads/${profileImage}`}
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover border-2 border-green-400"
             />

@@ -12,7 +12,7 @@ const DashboardPage = () => {
         className="relative flex flex-col justify-center items-center text-center h-screen w-full"
         style={{
           backgroundImage:
-            "url('/public/asset/hero/pexels-olia-danilevich-8145335.jpg')",
+            "url('/asset/hero/pexels-olia-danilevich-8145335.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
