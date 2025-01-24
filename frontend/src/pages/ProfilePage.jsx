@@ -171,7 +171,7 @@ const ProfilePage = ({ loggedInUserId }) => {
     <div
       className="w-full min-h-screen bg-gradient-to-br from-green-900 via-gray-900 to-black text-white py-20"
       style={{
-        backgroundImage: "url('/asset/hero/pexels-arthousestudio-4627406.jpg')",
+        backgroundImage: "url('asset/hero/pexels-arthousestudio-4627406.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
