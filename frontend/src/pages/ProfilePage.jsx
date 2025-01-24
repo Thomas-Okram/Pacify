@@ -14,9 +14,9 @@ import {
 import { AiOutlinePhone, AiOutlineEnvironment } from "react-icons/ai";
 
 const ProfilePage = ({ loggedInUserId }) => {
-  const { userId } = useParams(); // Get the userId from the URL
+  const { userId } = useParams();
   const navigate = useNavigate();
-  const logout = useAuthStore((state) => state.logout); // Logout function from auth store
+  const logout = useAuthStore((state) => state.logout);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -35,13 +35,11 @@ const ProfilePage = ({ loggedInUserId }) => {
     },
   });
   const [profileImage, setProfileImage] = useState(null);
+  const [bgImageLoaded, setBgImageLoaded] = useState(false);
+  const [profileImageLoaded, setProfileImageLoaded] = useState(false);
 
-  // Determine if the logged-in user is the owner of this profile
   const isOwner = loggedInUserId === userId;
 
-  /**
-   * Fetch profile data from the backend API.
-   */
   const fetchProfile = useCallback(async () => {
     setLoading(true);
     try {
@@ -58,10 +56,11 @@ const ProfilePage = ({ loggedInUserId }) => {
           companyWebsite: data.profile.socialLinks?.companyWebsite || "",
         },
       });
+      setProfileImage(`/uploads/${data.profile.profileImage}`);
     } catch (error) {
       console.error("Error fetching profile:", error);
       if (error.response?.status === 404) {
-        setProfile(null); // Profile not found
+        setProfile(null);
       } else {
         alert("An error occurred. Please try again later.");
       }
@@ -74,30 +73,21 @@ const ProfilePage = ({ loggedInUserId }) => {
     fetchProfile();
   }, [fetchProfile]);
 
-  /**
-   * Handle logout logic.
-   */
   const handleLogout = async () => {
     try {
-      await logout(); // Call the logout function from auth store
-      navigate("/login"); // Redirect to login page
+      await logout();
+      navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
       alert("Failed to logout. Please try again.");
     }
   };
 
-  /**
-   * Update profile input fields (text, location, etc.).
-   */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  /**
-   * Update social links fields.
-   */
   const handleSocialLinkChange = (e) => {
     const { name, value } = e.target;
     setUpdatedProfile((prev) => ({
@@ -109,17 +99,24 @@ const ProfilePage = ({ loggedInUserId }) => {
     }));
   };
 
-  /**
-   * Handle profile image selection.
-   */
-  const handleProfileImageChange = (e) => {
+  const handleProfileImageChange = async (e) => {
     const file = e.target.files[0];
-    setProfileImage(file);
+    setProfileImage(URL.createObjectURL(file)); // Show the uploaded image immediately
+    try {
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      await axios.post(`/api/profiles/${userId}/upload-image`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      alert("Profile image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
+      alert("Failed to upload profile image. Please try again.");
+    }
   };
 
-  /**
-   * Save updated profile data to the backend.
-   */
   const handleProfileUpdate = async () => {
     try {
       const formData = new FormData();
@@ -132,24 +129,18 @@ const ProfilePage = ({ loggedInUserId }) => {
         "socialLinks",
         JSON.stringify(updatedProfile.socialLinks)
       );
-      if (profileImage) formData.append("profileImage", profileImage);
 
-      const { data } = await axios.post(`/api/profiles/`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setProfile(data.profile);
-      setEditMode(false);
+      await axios.post(`/api/profiles/`, formData);
       alert("Profile updated successfully!");
+      setEditMode(false);
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile. Please try again later.");
     }
   };
 
-  // If loading, show loading spinner
   if (loading) return <div>Loading profile...</div>;
 
-  // If profile not found
   if (!profile) {
     return (
       <div className="text-center mt-20">
@@ -171,11 +162,20 @@ const ProfilePage = ({ loggedInUserId }) => {
     <div
       className="w-full min-h-screen bg-gradient-to-br from-green-900 via-gray-900 to-black text-white py-20"
       style={{
-        backgroundImage: "url('asset/hero/pexels-arthousestudio-4627406.jpg')",
+        backgroundImage: bgImageLoaded
+          ? "url('asset/hero/pexels-arthousestudio-4627406.jpg')"
+          : undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
+      <img
+        src="asset/hero/pexels-arthousestudio-4627406.jpg"
+        alt="Background"
+        className="hidden"
+        onLoad={() => setBgImageLoaded(true)}
+      />
+
       <div className="w-full max-w-7xl bg-gray-900 bg-opacity-60 shadow-lg rounded-3xl  p-12 text-center relative overflow-hidden">
         {isOwner && (
           <div className="absolute top-5 right-5 flex gap-4">
@@ -196,14 +196,11 @@ const ProfilePage = ({ loggedInUserId }) => {
 
         {/* Profile Image */}
         <div className="flex justify-center mb-8 relative">
-          {profile.profileImage || profileImage ? (
+          {profileImage && profileImageLoaded ? (
             <img
-              src={
-                profileImage
-                  ? URL.createObjectURL(profileImage)
-                  : `/uploads/${profile.profileImage}`
-              }
+              src={profileImage}
               alt="Profile"
+              onLoad={() => setProfileImageLoaded(true)}
               className="w-48 h-48 rounded-full object-cover border-8 border-indigo-500 shadow-lg"
             />
           ) : (
@@ -285,7 +282,6 @@ const ProfilePage = ({ loggedInUserId }) => {
         </div>
 
         {/* Social Links */}
-        {/* Social Links */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center mt-8 px-8">
           {Object.entries(updatedProfile.socialLinks).map(
             ([platform, value]) => (
@@ -343,7 +339,6 @@ const ProfilePage = ({ loggedInUserId }) => {
           )}
         </div>
 
-        {/* Save Changes Button */}
         {isOwner && editMode && (
           <button
             onClick={handleProfileUpdate}
