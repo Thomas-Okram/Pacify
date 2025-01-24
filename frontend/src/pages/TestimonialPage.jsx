@@ -14,7 +14,7 @@ const TestimonialPage = ({ isAdmin }) => {
   // Fetch all testimonials
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/testimonials")
+      .get("/api/testimonials") // Relative path
       .then((response) => setTestimonials(response.data.testimonials))
       .catch((error) => console.error(error));
   }, []);
@@ -38,7 +38,7 @@ const TestimonialPage = ({ isAdmin }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/testimonials",
+        "/api/testimonials", // Relative path
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -52,7 +52,7 @@ const TestimonialPage = ({ isAdmin }) => {
   // Delete a testimonial
   const handleDeleteTestimonial = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/testimonials/${id}`);
+      await axios.delete(`/api/testimonials/${id}`); // Relative path
       setTestimonials((prev) =>
         prev.filter((testimonial) => testimonial._id !== id)
       );
@@ -74,7 +74,7 @@ const TestimonialPage = ({ isAdmin }) => {
               className="p-6 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
             >
               <img
-                src={`http://localhost:5000/uploads/testimonials/${testimonial.image}`}
+                src={`${BASE_URL}/uploads/testimonials/${testimonial.image}`} // Relative path
                 alt={testimonial.name}
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
