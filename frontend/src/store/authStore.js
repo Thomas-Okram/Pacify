@@ -3,8 +3,11 @@ import axios from "axios";
 
 const API_URL =
   import.meta.env.MODE === "development"
-    ? "http://localhost:5000/api/auth"
-    : "/api/auth";
+    ? "http://localhost:5000/api/auth" // Development mode
+    : "/api/auth"; // Relative path for production
+
+console.log("Environment MODE:", import.meta.env.MODE); // Debugging
+console.log("API_URL:", API_URL); // Debugging
 
 axios.defaults.withCredentials = true;
 
