@@ -74,7 +74,11 @@ function App() {
     const fetchLoggedInUserId = async () => {
       try {
         if (!loggedInUserId && isAuthenticated) {
-          const { data } = await axios.get("http://localhost:5000/api/auth/me");
+          const baseURL =
+            process.env.REACT_APP_API_URL || "http://localhost:5000";
+          const { data } = await axios.get(`${baseURL}/api/auth/me`, {
+            withCredentials: true,
+          });
           console.log("Fetched logged-in user ID:", data.userId);
           setLoggedInUserId(data.userId);
         }
