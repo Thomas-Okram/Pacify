@@ -37,15 +37,14 @@ const __dirname = path.resolve();
 
 // CORS configuration
 const corsOptions = {
-  origin: [
-    process.env.FRONTEND_URL || "http://localhost:5173", // Deployed frontend and local dev
-  ],
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 
