@@ -202,7 +202,7 @@ const ProfilePage = ({ loggedInUserId }) => {
               src={
                 profileImage
                   ? URL.createObjectURL(profileImage)
-                  : `http://localhost:5000/uploads/${profile.profileImage}`
+                  : `/uploads/${profile.profileImage}`
               }
               alt="Profile"
               className="w-48 h-48 rounded-full object-cover border-8 border-indigo-500 shadow-lg"

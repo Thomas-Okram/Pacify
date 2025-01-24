@@ -236,7 +236,7 @@ const EventPage = ({ isAdmin }) => {
               className="p-6 bg-gray-800 rounded-lg shadow-lg"
             >
               <img
-                src={`http://localhost:5000/uploads/events/${event.image}`}
+                src={`/uploads/events/${event.image}`}
                 alt={event.name}
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
