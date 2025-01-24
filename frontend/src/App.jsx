@@ -74,8 +74,10 @@ function App() {
     const fetchLoggedInUserId = async () => {
       try {
         if (!loggedInUserId && isAuthenticated) {
+          // Dynamically use the correct base URL
           const baseURL =
             process.env.REACT_APP_API_URL || "http://localhost:5000";
+
           const { data } = await axios.get(`${baseURL}/api/auth/me`, {
             withCredentials: true,
           });

@@ -35,8 +35,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
+// CORS configuration
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: [
+    process.env.FRONTEND_URL || "http://localhost:5173", // Deployed frontend and local dev
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -57,7 +60,9 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure:
+        process.env.NODE_ENV === "production" &&
+        process.env.USE_HTTPS === "true", // Secure only if HTTPS
       httpOnly: true,
       maxAge: 3600000, // 1 hour
     },
