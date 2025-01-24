@@ -19,7 +19,7 @@ const ProductPage = ({ isAdmin }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await axios.get("/api/products");
         setProducts(response.data.products);
       } catch (error) {
         console.error(error);
@@ -54,11 +54,9 @@ const ProductPage = ({ isAdmin }) => {
     setError(null);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/products",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const response = await axios.post("/api/products", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       setProducts((prev) => [...prev, response.data.product]);
       setNewProduct({ name: "", description: "", price: "", image: null });
     } catch (error) {

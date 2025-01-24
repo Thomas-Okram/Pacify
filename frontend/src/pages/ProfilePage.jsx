@@ -45,9 +45,7 @@ const ProfilePage = ({ loggedInUserId }) => {
   const fetchProfile = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/profiles/${userId}`
-      );
+      const { data } = await axios.get(`/api/profiles/${userId}`);
       setProfile(data.profile);
       setUpdatedProfile({
         ...data.profile,
@@ -136,13 +134,9 @@ const ProfilePage = ({ loggedInUserId }) => {
       );
       if (profileImage) formData.append("profileImage", profileImage);
 
-      const { data } = await axios.post(
-        `http://localhost:5000/api/profiles/`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const { data } = await axios.post(`/api/profiles/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       setProfile(data.profile);
       setEditMode(false);
       alert("Profile updated successfully!");

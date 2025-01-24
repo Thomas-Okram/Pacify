@@ -33,7 +33,7 @@ const EventPage = ({ isAdmin }) => {
 
   const fetchEvents = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/events");
+      const { data } = await axios.get("/api/events"); // Relative path
       setEvents(data.events || []);
       setPastEvents(data.pastEvents || []);
     } catch (error) {
@@ -96,7 +96,7 @@ const EventPage = ({ isAdmin }) => {
     formData.append("image", newEvent.image);
 
     try {
-      await axios.post("http://localhost:5000/api/events", formData, {
+      await axios.post("/api/events", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       fetchEvents();
