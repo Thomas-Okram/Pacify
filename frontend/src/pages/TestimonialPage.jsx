@@ -74,7 +74,7 @@ const TestimonialPage = ({ isAdmin }) => {
               className="p-6 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
             >
               <img
-                src={`${BASE_URL}/uploads/testimonials/${testimonial.image}`} // Relative path
+                src={`/uploads/testimonials/${testimonial.image}`} // Relative path
                 alt={testimonial.name}
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
